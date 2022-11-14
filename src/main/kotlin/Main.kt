@@ -5,6 +5,7 @@ import com.github.michaelbull.result.Result
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
+import java.io.File
 
 val syntaxError = Err("Syntax error.")
 
@@ -21,9 +22,10 @@ fun CalculatorVisitor.executeStatement(statement: String): Result<Int, String> {
 }
 
 fun main() {
+    val commands = File("sample-input.txt").readLines()
     val visitor = CalculatorVisitor()
-    println(visitor.executeStatement("2 + 3;"))
-    println(visitor.executeStatement("a = 2 + 3 + 4;"))
-    println(visitor.executeStatement("a = a  * 2;"))
-    println(visitor.executeStatement("a ++ 1;"))
+    for (line in commands) {
+        val result = visitor.executeStatement(line)
+        println("${line.padEnd(15, ' ')} -> $result")
+    }
 }
